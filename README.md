@@ -150,12 +150,3 @@ flask run --debug
 
 ---
 
-### ✅ Final To-Dos Before Publishing
-
-- [ ] Replace all placeholder image URLs (`i.imgur.com/...`)
-- [ ] Add your actual GitHub username & email
-- [ ] Confirm `.env` setup instructions match backend
-- [ ] Add a real project banner image
-- [ ] Push code and README to GitHub
-
----
