@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hindi Basics - AI Hindi Coach | ATY Designs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+    }
+
+    .lesson-card {
+      transition: all 0.3s ease;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .active-lesson {
+      border-left: 4px solid #4f46e5;
+      background-color: #f5f3ff;
+    }
+
+    .exercise-card {
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .exercise-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .hindi-font {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+
+    .lesson-content {
+      display: none;
+    }
+
+    .lesson-content.active {
+      display: block;
+    }
+
+    .typing-indicator {
+      display: flex;
+      padding: 10px 14px;
+      background-color: #f3f4f6;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #6b7280;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingAnimation {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-5px);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="gradient-bg text-white shadow-lg">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center">
+            <i class="fas fa-robot text-2xl mr-2"></i>
+            <span class="text-xl font-bold">AI Hindi Coach</span>
+          </a>
+          <span class="text-sm opacity-80">by ATY Designs</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html#features" class="hover:text-gray-200 transition">Features</a>
+          <a href="index.html#lessons" class="hover:text-gray-200 transition">Lessons</a>
+          <a href="index.html#practice" class="hover:text-gray-200 transition">Practice</a>
+          <a href="index.html#about" class="hover:text-gray-200 transition">About</a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button id="loginBtn"
+            class="px-4 py-2 rounded-md hover:bg-white hover:bg-opacity-20 transition">Login</button>
+          <button id="signupBtn"
+            class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium hover:bg-gray-100 transition">Sign
+            Up</button>
+        </div>
+        <button id="mobileMenuBtn" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header -->
+  <section class="gradient-bg text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="flex items-center">
+        <a href="index.html#lessons" class="text-white hover:text-gray-200 mr-4">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+          <span class="text-sm opacity-80">Course</span>
+          <h1 class="text-3xl md:text-4xl font-bold">Hindi Basics</h1>
+          <p class="mt-2 opacity-90">Learn essential greetings, introductions, and common phrases</p>
+        </div>
+      </div>
+      <div class="mt-6 flex items-center">
+        <div class="w-full bg-white bg-opacity-20 rounded-full h-2.5">
+          <div class="bg-white h-2.5 rounded-full" id="progressBar" style="width: 8%"></div>
+        </div>
+        <span class="ml-4 text-sm"><span id="currentLessonNumber">1</span>/12 lessons</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lesson Content -->
+  <section class="py-12">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Lessons Sidebar -->
+        <div class="lg:w-1/4">
+          <div class="bg-white rounded-xl shadow-sm p-6 sticky top-6">
+            <h3 class="font-bold text-lg mb-4">Lessons</h3>
+            <ul class="space-y-2" id="lessonsList">
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md active-lesson font-medium lesson-link" data-lesson="1">
+                  <i class="fas fa-play-circle mr-2 text-indigo-600"></i>
+                  1. Greetings
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="2">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  2. Introducing Yourself
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="3">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  3. Common Phrases
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="4">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  4. Numbers 1-10
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="5">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  5. Asking Questions
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="6">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  6. Family Members
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="7">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  7. Days of the Week
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="8">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  8. Food & Drinks
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="9">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  9. Shopping Phrases
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link"
+                  data-lesson="10">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  10. Directions
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link"
+                  data-lesson="11">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  11. Time & Dates
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link"
+                  data-lesson="12">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  12. Review & Practice
+                </a>
+              </li>
+            </ul>
+            <div class="mt-6 pt-6 border-t border-gray-200">
+              <h4 class="font-bold text-sm uppercase text-gray-500 mb-3">Achievements</h4>
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                  <i class="fas fa-trophy text-yellow-500 text-sm"></i>
+                </div>
+                <span class="text-sm">Beginner Learner</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Lesson Content -->
+        <div class="lg:w-3/4">
+          <!-- Lesson 1: Greetings -->
+          <div id="lesson1" class="lesson-content active bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 1 of 12</span>
+                <h2 class="text-2xl font-bold mt-1">Greetings</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">In this lesson, you'll learn the most common Hindi greetings used in daily
+                  conversations. Greetings are the first step to making connections with Hindi speakers.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Basic Greetings</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Namaste</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Hello / Greetings</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: nuh-muh-stay</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Namaskar</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Hello (more formal)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: nuh-muh-skar</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Shubh prabhaat</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Good morning</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: shubh pruh-bhaat</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Shubh raatri</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Good night</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: shubh raa-tree</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Common Responses</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Aap kaise hain?</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">How are you? (formal)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: aap kai-say hain</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Main theek hoon</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">I'm fine</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: main theek hoon</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Dhanyavaad</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Thank you</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: dhun-yuh-vaad</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Phir milenge</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">See you again</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: phir mi-len-gay</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Cultural Note</h3>
+                <div class="bg-blue-50 rounded-lg p-4 mt-4">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <i class="fas fa-info-circle text-blue-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-blue-800">In India, people often greet each other with "Namaste" while pressing
+                        their palms together near the chest (called "Namaste" gesture). This is considered respectful,
+                        especially when greeting elders.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Practice Exercises -->
+              <div class="mt-12">
+                <h3 class="text-xl font-semibold">Practice Exercises</h3>
+
+                <!-- Exercise 1: Matching -->
+                <div class="mt-6 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">1. Match the Greetings</h4>
+                  <p class="text-gray-600 mt-2">Match the Hindi phrases with their English meanings.</p>
+
+                  <div class="mt-4 grid md:grid-cols-2 gap-4" id="matchingExercise">
+                    <div class="border rounded-lg p-3 cursor-move bg-gray-50" draggable="true" data-value="namaste">
+                      <span class="hindi-font">नमस्ते</span> (Namaste)
+                    </div>
+                    <div class="border rounded-lg p-3 cursor-move bg-gray-50" draggable="true"
+                      data-value="shubh prabhaat">
+                      <span class="hindi-font">शुभ प्रभात</span> (Shubh prabhaat)
+                    </div>
+                    <div class="border rounded-lg p-3 bg-gray-100">
+                      Hello / Greetings
+                      <div class="mt-2 h-10 border-2 border-dashed rounded" id="target-namaste"></div>
+                    </div>
+                    <div class="border rounded-lg p-3 bg-gray-100">
+                      Good morning
+                      <div class="mt-2 h-10 border-2 border-dashed rounded" id="target-shubh prabhaat"></div>
+                    </div>
+                  </div>
+                  <button id="checkMatchingBtn"
+                    class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Check Answers
+                  </button>
+                  <div id="matchingFeedback" class="hidden mt-4 p-3 rounded"></div>
+                </div>
+
+                <!-- Exercise 2: Audio Practice -->
+                <div class="mt-8 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">2. Pronunciation Practice</h4>
+                  <p class="text-gray-600 mt-2">Listen to the audio and repeat the phrases.</p>
+
+                  <div class="mt-4 space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <span class="hindi-font">नमस्ते, आप कैसे हैं?</span><br>
+                        <span class="text-gray-600">Namaste, aap kaise hain?</span>
+                      </div>
+                      <button class="p-2 bg-indigo-100 text-indigo-600 rounded-full hover:bg-indigo-200">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <span class="hindi-font">मैं ठीक हूँ, धन्यवाद</span><br>
+                        <span class="text-gray-600">Main theek hoon, dhanyavaad</span>
+                      </div>
+                      <button class="p-2 bg-indigo-100 text-indigo-600 rounded-full hover:bg-indigo-200">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mt-6">
+                    <h5 class="font-medium">Record Your Voice</h5>
+                    <div class="mt-2 flex items-center">
+                      <button id="recordExerciseBtn"
+                        class="p-3 bg-indigo-100 text-indigo-600 rounded-full hover:bg-indigo-200">
+                        <i class="fas fa-microphone"></i>
+                      </button>
+                      <span id="recordStatus" class="ml-3 text-sm text-gray-600">Click the microphone to record</span>
+                    </div>
+                    <div id="pronunciationFeedback" class="hidden mt-4 p-3 bg-yellow-50 rounded-lg">
+                      <div class="flex">
+                        <i class="fas fa-info-circle text-yellow-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="font-medium text-yellow-800">Pronunciation Feedback</p>
+                          <p class="text-yellow-700">Try to emphasize the "a" sound in "Namaste" more clearly.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Exercise 3: Conversation Practice -->
+                <div class="mt-8 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">3. Simple Conversation</h4>
+                  <p class="text-gray-600 mt-2">Practice this short conversation with our AI assistant.</p>
+
+                  <div class="mt-4 bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-start mb-4">
+                      <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-indigo-600"></i>
+                      </div>
+                      <div class="bg-white rounded-lg px-4 py-3">
+                        <p class="text-gray-800">Namaste! Aap kaise hain? (Hello! How are you?)</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-gray-600"></i>
+                      </div>
+                      <div class="bg-gray-200 rounded-lg px-4 py-3">
+                        <input type="text" placeholder="Type your response in Hindi..."
+                          class="bg-transparent border-none w-full focus:outline-none">
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Check Answer
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lesson Navigation -->
+              <div class="mt-12 flex justify-between">
+                <button disabled class="px-4 py-2 bg-gray-200 text-gray-600 rounded-md cursor-not-allowed">
+                  <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                <button class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  data-next="2">
+                  Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 2: Introducing Yourself -->
+          <div id="lesson2" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 2 of 12</span>
+                <h2 class="text-2xl font-bold mt-1">Introducing Yourself</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">In this lesson, you'll learn how to introduce yourself in Hindi, including
+                  sharing your name, where you're from, and basic personal information.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Basic Introductions</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Mera naam ___ hai</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">My name is ___</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: may-ra naam ___ hai</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Main ___ se hoon</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">I am from ___</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: main ___ say hoon</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Main ___ saal ka hoon</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">I am ___ years old</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: main ___ saal ka hoon</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Mera pesha ___ hai</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">My profession is ___</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: may-ra pay-sha ___ hai</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Sample Conversation</h3>
+                <div class="mt-4 bg-gray-50 rounded-lg p-4">
+                  <div class="flex items-start mb-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                      <i class="fas fa-robot text-indigo-600"></i>
+                    </div>
+                    <div class="bg-white rounded-lg px-4 py-3">
+                      <p class="text-gray-800">Namaste! Aapka naam kya hai? (Hello! What is your name?)</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start mb-4">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                      <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                    <div class="bg-gray-200 rounded-lg px-4 py-3">
+                      <p class="text-gray-800">Mera naam Rohan hai. (My name is Rohan)</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                      <i class="fas fa-robot text-indigo-600"></i>
+                    </div>
+                    <div class="bg-white rounded-lg px-4 py-3">
+                      <p class="text-gray-800">Aap kahan se hain? (Where are you from?)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Cultural Note</h3>
+                <div class="bg-blue-50 rounded-lg p-4 mt-4">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <i class="fas fa-info-circle text-blue-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-blue-800">In Indian culture, it's common to ask about someone's profession or
+                        family early in a conversation. This is considered polite and shows interest in the other
+                        person.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Practice Exercises -->
+              <div class="mt-12">
+                <h3 class="text-xl font-semibold">Practice Exercises</h3>
+
+                <!-- Exercise 1: Fill in the blanks -->
+                <div class="mt-6 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">1. Complete the Sentences</h4>
+                  <p class="text-gray-600 mt-2">Fill in the blanks with appropriate Hindi phrases.</p>
+
+                  <div class="mt-4 space-y-4">
+                    <div class="border rounded-lg p-4">
+                      <p class="text-gray-700">"_____ Rohan hai." (My name is Rohan)</p>
+                      <input type="text" class="mt-2 w-full px-3 py-2 border rounded-md" placeholder="Type in Hindi">
+                    </div>
+                    <div class="border rounded-lg p-4">
+                      <p class="text-gray-700">"Main _____ hoon." (I am from America)</p>
+                      <input type="text" class="mt-2 w-full px-3 py-2 border rounded-md" placeholder="Type in Hindi">
+                    </div>
+                  </div>
+                  <button class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Check Answers
+                  </button>
+                </div>
+
+                <!-- Exercise 2: Conversation Practice -->
+                <div class="mt-8 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">2. Role Play</h4>
+                  <p class="text-gray-600 mt-2">Practice introducing yourself with our AI assistant.</p>
+
+                  <div class="mt-4 bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-start mb-4">
+                      <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-indigo-600"></i>
+                      </div>
+                      <div class="bg-white rounded-lg px-4 py-3">
+                        <p class="text-gray-800">Namaste! Aapka naam kya hai? (Hello! What is your name?)</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-gray-600"></i>
+                      </div>
+                      <div class="bg-gray-200 rounded-lg px-4 py-3">
+                        <input type="text" placeholder="Type your response in Hindi..."
+                          class="bg-transparent border-none w-full focus:outline-none">
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Check Answer
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lesson Navigation -->
+              <div class="mt-12 flex justify-between">
+                <button class="prev-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  data-prev="1">
+                  <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                <button class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  data-next="3">
+                  Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 3: Common Phrases -->
+          <div id="lesson3" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 3 of 12</span>
+                <h2 class="text-2xl font-bold mt-1">Common Phrases</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn essential Hindi phrases that will help you in everyday conversations and
+                  situations.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Useful Phrases</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Kripya</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Please</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: krip-ya</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Maaf kijiye</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Excuse me / Sorry</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: maaf kee-jee-ye</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Mujhe samajh nahi aaya</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">I don't understand</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: moo-jhay sa-majh na-hee aa-ya</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Dhire boliye</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Please speak slowly</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: dhee-re bo-lee-ye</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Emergency Phrases</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Madad chahiye</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">I need help</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: ma-dad cha-hee-ye</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Doctor ko bulao</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Call a doctor</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: doc-tor ko boo-lao</p>
+                  </div>
+                </div>
+
+                <!-- More lesson content would go here -->
+              </div>
+
+              <!-- Lesson Navigation -->
+              <div class="mt-12 flex justify-between">
+                <button class="prev-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  data-prev="2">
+                  <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                <button class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  data-next="4">
+                  Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 4: Numbers 1-10 -->
+          <div class="lesson-content" id="lesson4">
+            <h2 class="text-2xl font-bold mb-6">Numbers 1-10</h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">एक</div>
+                <div class="text-gray-600">(ek)</div>
+                <div class="font-bold">One</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">दो</div>
+                <div class="text-gray-600">(do)</div>
+                <div class="font-bold">Two</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">तीन</div>
+                <div class="text-gray-600">(teen)</div>
+                <div class="font-bold">Three</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">चार</div>
+                <div class="text-gray-600">(chaar)</div>
+                <div class="font-bold">Four</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">पांच</div>
+                <div class="text-gray-600">(paanch)</div>
+                <div class="font-bold">Five</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">छह</div>
+                <div class="text-gray-600">(chhah)</div>
+                <div class="font-bold">Six</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">सात</div>
+                <div class="text-gray-600">(saat)</div>
+                <div class="font-bold">Seven</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">आठ</div>
+                <div class="text-gray-600">(aath)</div>
+                <div class="font-bold">Eight</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">नौ</div>
+                <div class="text-gray-600">(nau)</div>
+                <div class="font-bold">Nine</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-2xl mb-2">दस</div>
+                <div class="text-gray-600">(das)</div>
+                <div class="font-bold">Ten</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Count from 1 to 10 in Hindi:</p>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 bg-white rounded-lg">
+                  <p class="mb-2">1. एक (ek)</p>
+                  <p class="mb-2">2. दो (do)</p>
+                  <p class="mb-2">3. तीन (teen)</p>
+                  <p class="mb-2">4. चार (chaar)</p>
+                  <p class="mb-2">5. पांच (paanch)</p>
+                </div>
+                <div class="p-4 bg-white rounded-lg">
+                  <p class="mb-2">6. छह (chhah)</p>
+                  <p class="mb-2">7. सात (saat)</p>
+                  <p class="mb-2">8. आठ (aath)</p>
+                  <p class="mb-2">9. नौ (nau)</p>
+                  <p class="mb-2">10. दस (das)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 5: Asking Questions -->
+          <div class="lesson-content" id="lesson5">
+            <h2 class="text-2xl font-bold mb-6">Asking Questions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">आप कैसे हैं?</div>
+                <div class="text-gray-600">(Aap kaise hain?)</div>
+                <div class="font-bold">How are you?</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">आपका नाम क्या है?</div>
+                <div class="text-gray-600">(Aapka naam kya hai?)</div>
+                <div class="font-bold">What is your name?</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">यह क्या है?</div>
+                <div class="text-gray-600">(Yeh kya hai?)</div>
+                <div class="font-bold">What is this?</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">कितना है?</div>
+                <div class="text-gray-600">(Kitna hai?)</div>
+                <div class="font-bold">How much is it?</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Try asking these questions in Hindi:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">1. Where is the bathroom?</p>
+                <p class="hindi-font">शौचालय कहाँ है? (Shauchalay kahan hai?)</p>
+              </div>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">2. What time is it?</p>
+                <p class="hindi-font">कितना बजा है? (Kitna baja hai?)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 6: Family Members -->
+          <div class="lesson-content" id="lesson6">
+            <h2 class="text-2xl font-bold mb-6">Family Members</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">माँ</div>
+                <div class="text-gray-600">(Maa)</div>
+                <div class="font-bold">Mother</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">पिता</div>
+                <div class="text-gray-600">(Pita)</div>
+                <div class="font-bold">Father</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">भाई</div>
+                <div class="text-gray-600">(Bhai)</div>
+                <div class="font-bold">Brother</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">बहन</div>
+                <div class="text-gray-600">(Behan)</div>
+                <div class="font-bold">Sister</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Introduce your family in Hindi:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">This is my mother - यह मेरी माँ है (Yeh meri maa hai)</p>
+                <p class="mb-2">This is my father - यह मेरे पिता हैं (Yeh mere pita hain)</p>
+                <p class="mb-2">This is my brother - यह मेरा भाई है (Yeh mera bhai hai)</p>
+                <p class="mb-2">This is my sister - यह मेरी बहन है (Yeh meri bahan hai)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 7: Days of the Week -->
+          <div class="lesson-content" id="lesson7">
+            <h2 class="text-2xl font-bold mb-6">Days of the Week</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">सोमवार</div>
+                <div class="text-gray-600">(Somvaar)</div>
+                <div class="font-bold">Monday</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">मंगलवार</div>
+                <div class="text-gray-600">(Mangalvaar)</div>
+                <div class="font-bold">Tuesday</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">बुधवार</div>
+                <div class="text-gray-600">(Budhvaar)</div>
+                <div class="font-bold">Wednesday</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">गुरुवार</div>
+                <div class="text-gray-600">(Guruvaar)</div>
+                <div class="font-bold">Thursday</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">शुक्रवार</div>
+                <div class="text-gray-600">(Shukravaar)</div>
+                <div class="font-bold">Friday</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">शनिवार</div>
+                <div class="text-gray-600">(Shanivaar)</div>
+                <div class="font-bold">Saturday</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">रविवार</div>
+                <div class="text-gray-600">(Ravivaar)</div>
+                <div class="font-bold">Sunday</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Answer these questions in Hindi:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">1. What day is today? - आज कौन सा दिन है? (Aaj kaun sa din hai?)</p>
+                <p class="mb-2">2. What day is tomorrow? - कल कौन सा दिन है? (Kal kaun sa din hai?)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 8: Food & Drinks -->
+          <div class="lesson-content" id="lesson8">
+            <h2 class="text-2xl font-bold mb-6">Food & Drinks</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">रोटी</div>
+                <div class="text-gray-600">(Roti)</div>
+                <div class="font-bold">Bread</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">चावल</div>
+                <div class="text-gray-600">(Chawal)</div>
+                <div class="font-bold">Rice</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">पानी</div>
+                <div class="text-gray-600">(Paani)</div>
+                <div class="font-bold">Water</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">चाय</div>
+                <div class="text-gray-600">(Chai)</div>
+                <div class="font-bold">Tea</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Order food in Hindi:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">I would like to order... - मैं ऑर्डर करना चाहता/चाहती हूं... (Main order karna
+                  chahta/chahti hoon...)</p>
+                <p class="mb-2">Can I have some water? - क्या मुझे थोड़ा पानी मिल सकता है? (Kya mujhe thoda paani mil
+                  sakta hai?)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 9: Shopping Phrases -->
+          <div class="lesson-content" id="lesson9">
+            <h2 class="text-2xl font-bold mb-6">Shopping Phrases</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">कितना है?</div>
+                <div class="text-gray-600">(Kitna hai?)</div>
+                <div class="font-bold">How much is it?</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">क्या आप क्रेडिट कार्ड स्वीकार करते हैं?</div>
+                <div class="text-gray-600">(Kya aap credit card sweekar karte hain?)</div>
+                <div class="font-bold">Do you accept credit cards?</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">क्या आप इसे पैक कर देंगे?</div>
+                <div class="text-gray-600">(Kya aap ise pack kar denge?)</div>
+                <div class="font-bold">Can you pack this?</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">क्या आपके पास छूट है?</div>
+                <div class="text-gray-600">(Kya aapke paas chhoot hai?)</div>
+                <div class="font-bold">Do you have a discount?</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Try these shopping scenarios:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">1. Asking for price - यह कितने का है? (Yeh kitne ka hai?)</p>
+                <p class="mb-2">2. Asking for different size - क्या यह दूसरे साइज़ में उपलब्ध है? (Kya yeh doosre size
+                  mein uplabdh hai?)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 10: Directions -->
+          <div class="lesson-content" id="lesson10">
+            <h2 class="text-2xl font-bold mb-6">Directions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">दाएं</div>
+                <div class="text-gray-600">(Daayein)</div>
+                <div class="font-bold">Right</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">बाएं</div>
+                <div class="text-gray-600">(Baayein)</div>
+                <div class="font-bold">Left</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">सीधे</div>
+                <div class="text-gray-600">(Seedhe)</div>
+                <div class="font-bold">Straight</div>
+              </div>
+              <div class="exercise-card p-6 rounded-lg">
+                <div class="hindi-font text-xl mb-2">पीछे</div>
+                <div class="text-gray-600">(Peeche)</div>
+                <div class="font-bold">Behind</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Ask for directions in Hindi:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">1. Where is...? - ...कहाँ है? (...kahan hai?)</p>
+                <p class="mb-2">2. How do I get to...? - ...तक कैसे पहुंचूं? (...tak kaise pahunche?)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 11: Time & Dates -->
+          <div class="lesson-content" id="lesson11">
+            <h2 class="text-2xl font-bold mb-6">Time & Dates</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">सुबह</div>
+                <div class="text-gray-600">(Subah)</div>
+                <div class="font-bold">Morning</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">दोपहर</div>
+                <div class="text-gray-600">(Dopahar)</div>
+                <div class="font-bold">Afternoon</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">शाम</div>
+                <div class="text-gray-600">(Shaam)</div>
+                <div class="font-bold">Evening</div>
+              </div>
+              <div class="exercise-card p-4 rounded-lg">
+                <div class="hindi-font text-xl mb-2">रात</div>
+                <div class="text-gray-600">(Raat)</div>
+                <div class="font-bold">Night</div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Practice Exercise</h3>
+              <p class="mb-4">Tell time in Hindi:</p>
+              <div class="p-4 bg-white rounded-lg">
+                <p class="mb-2">1. What time is it? - कितना बजा है? (Kitna baja hai?)</p>
+                <p class="mb-2">2. It's 3 o'clock - तीन बजे हैं (Teen baje hain)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 12: Review & Practice -->
+          <div id="lesson12" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 12 of 12</span>
+                <h2 class="text-2xl font-bold mt-1">Review & Practice</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Congratulations on completing the Hindi Basics course! This final lesson will
+                  help you review what you've learned and practice your skills.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Comprehensive Review</h3>
+                <div class="mt-4 bg-green-50 rounded-lg p-4">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <i class="fas fa-star text-green-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-green-800 font-medium">You've learned 100+ Hindi words and phrases!</p>
+                      <p class="text-green-700 mt-1">Take this opportunity to review the material and practice your
+                        pronunciation.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Final Practice Exercises</h3>
+                <p class="text-gray-600 mt-2">Test your knowledge with these comprehensive exercises.</p>
+              </div>
+
+              <!-- Practice Exercises -->
+              <div class="mt-8">
+                <!-- Exercise 1: Conversation Practice -->
+                <div class="exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">1. Complete Conversation</h4>
+                  <p class="text-gray-600 mt-2">Fill in the blanks to complete this conversation.</p>
+
+                  <div class="mt-4 bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-start mb-4">
+                      <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-indigo-600"></i>
+                      </div>
+                      <div class="bg-white rounded-lg px-4 py-3">
+                        <p class="text-gray-800">Namaste! Aapka naam kya hai?</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-gray-600"></i>
+                      </div>
+                      <div class="bg-gray-200 rounded-lg px-4 py-3">
+                        <input type="text" placeholder="Type your response in Hindi..."
+                          class="bg-transparent border-none w-full focus:outline-none">
+                      </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                      <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-indigo-600"></i>
+                      </div>
+                      <div class="bg-white rounded-lg px-4 py-3">
+                        <p class="text-gray-800">Aap kahan se hain?</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start">
+                      <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-gray-600"></i>
+                      </div>
+                      <div class="bg-gray-200 rounded-lg px-4 py-3">
+                        <input type="text" placeholder="Type your response in Hindi..."
+                          class="bg-transparent border-none w-full focus:outline-none">
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Check Answers
+                  </button>
+                </div>
+
+                <!-- Exercise 2: Final Quiz -->
+                <div class="mt-8 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">2. Final Quiz</h4>
+                  <p class="text-gray-600 mt-2">Test your knowledge with this 10-question quiz.</p>
+
+                  <div class="mt-4 space-y-4">
+                    <div class="border rounded-lg p-4">
+                      <p class="font-medium">1. How do you say "Thank you" in Hindi?</p>
+                      <div class="mt-2 space-y-2">
+                        <label class="flex items-center">
+                          <input type="radio" name="q1" class="mr-2"> Dhanyavaad
+                        </label>
+                        <label class="flex items-center">
+                          <input type="radio" name="q1" class="mr-2"> Namaste
+                        </label>
+                        <label class="flex items-center">
+                          <input type="radio" name="q1" class="mr-2"> Shukriya
+                        </label>
+                      </div>
+                    </div>
+
+                    <!-- More quiz questions would go here -->
+                  </div>
+
+                  <button class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Submit Quiz
+                  </button>
+                </div>
+              </div>
+
+              <!-- Course Completion -->
+              <div class="mt-12 bg-blue-50 rounded-lg p-6 text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-trophy text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-blue-800">Course Completed!</h3>
+                <p class="text-blue-700 mt-2">Congratulations on finishing the Hindi Basics course!</p>
+                <button class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700">
+                  View Certificate
+                </button>
+              </div>
+
+              <!-- Lesson Navigation -->
+              <div class="mt-12 flex justify-between">
+                <button class="prev-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  data-prev="11">
+                  <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                <button disabled class="px-4 py-2 bg-gray-200 text-gray-600 rounded-md cursor-not-allowed">
+                  Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fas fa-robot text-2xl mr-2 text-indigo-400"></i>
+            <span class="text-xl font-bold">AI Hindi Coach</span>
+          </div>
+          <p class="text-gray-400 mb-4">Your personal AI-powered language learning assistant.</p>
+          <p class="text-gray-400 text-sm">
+            <span class="font-medium">ATY Designs</span><br>
+            We build for you
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Product</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Features</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Lessons</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Mobile App</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Company</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Connect</h4>
+          <div class="flex space-x-4 mb-4">
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-500 transition">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+          <p class="text-gray-400 text-sm">Subscribe to our newsletter</p>
+          <div class="mt-2 flex">
+            <input type="email" placeholder="Your email"
+              class="px-4 py-2 rounded-l-md bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full">
+            <button class="px-4 py-2 bg-indigo-600 rounded-r-md hover:bg-indigo-700">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 ATY Designs. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Navigation between lessons
+      const lessonContents = document.querySelectorAll('.lesson-content');
+      const lessonLinks = document.querySelectorAll('.lesson-link');
+      const nextButtons = document.querySelectorAll('.next-lesson-btn');
+      const prevButtons = document.querySelectorAll('.prev-lesson-btn');
+      const progressBar = document.getElementById('progressBar');
+      const currentLessonNumber = document.getElementById('currentLessonNumber');
+
+      // Function to show a specific lesson
+      function showLesson(lessonNumber) {
+        // Hide all lesson contents
+        lessonContents.forEach(content => {
+          content.classList.remove('active');
+        });
+
+        // Show the selected lesson
+        const lessonToShow = document.getElementById(`lesson${lessonNumber}`);
+        if (lessonToShow) {
+          lessonToShow.classList.add('active');
+        }
+
+        // Update progress bar
+        const progressPercentage = (lessonNumber / 12) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+
+        // Update current lesson number
+        currentLessonNumber.textContent = lessonNumber;
+
+        // Update active state in sidebar
+        lessonLinks.forEach(link => {
+          if (parseInt(link.dataset.lesson) === parseInt(lessonNumber)) {
+            link.classList.add('active-lesson');
+            link.classList.add('font-medium');
+            link.querySelector('i').className = 'fas fa-play-circle mr-2 text-indigo-600';
+          } else {
+            link.classList.remove('active-lesson');
+            link.classList.remove('font-medium');
+            link.querySelector('i').className = 'far fa-circle mr-2 text-gray-400';
+          }
+        });
+
+        // Scroll to top of lesson content
+        window.scrollTo({
+          top: 200,
+          behavior: 'smooth'
+        });
+      }
+
+      // Next lesson button click handler
+      nextButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const nextLesson = this.dataset.next;
+          showLesson(nextLesson);
+        });
+      });
+
+      // Previous lesson button click handler
+      prevButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const prevLesson = this.dataset.prev;
+          showLesson(prevLesson);
+        });
+      });
+
+      // Sidebar lesson links click handler
+      lessonLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const lessonNumber = this.dataset.lesson;
+          showLesson(lessonNumber);
+        });
+      });
+
+      // For demo purposes - would be replaced with real functionality
+      document.getElementById('checkMatchingBtn')?.addEventListener('click', function () {
+        const feedback = document.getElementById('matchingFeedback');
+        feedback.innerHTML = `
+          <div class="flex items-center text-green-600">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Good job! All matches are correct.</span>
+          </div>
+        `;
+        feedback.classList.remove('hidden');
+      });
+
+      document.getElementById('recordExerciseBtn')?.addEventListener('click', function () {
+        const status = document.getElementById('recordStatus');
+        const feedback = document.getElementById('pronunciationFeedback');
+
+        status.textContent = "Recording... Speak now";
+        setTimeout(() => {
+          status.textContent = "Recording complete";
+          feedback.classList.remove('hidden');
+        }, 2000);
+      });
+
+      // Initialize with first lesson
+      showLesson(1);
+    });
+  </script>
+</body>
+
+</html>
