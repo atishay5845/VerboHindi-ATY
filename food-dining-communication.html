@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food & Dining - Hindi Communication | ATY Designs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+    }
+
+    .lesson-card {
+      transition: all 0.3s ease;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .active-lesson {
+      border-left: 4px solid #4f46e5;
+      background-color: #f5f3ff;
+    }
+
+    .exercise-card {
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .exercise-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .hindi-font {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+
+    .lesson-content {
+      display: none;
+    }
+
+    .lesson-content.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="gradient-bg text-white shadow-lg">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center">
+            <i class="fas fa-robot text-2xl mr-2"></i>
+            <span class="text-xl font-bold">AI Hindi Coach</span>
+          </a>
+          <span class="text-sm opacity-80">by ATY Designs</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html#features" class="hover:text-gray-200 transition">Features</a>
+          <a href="index.html#lessons" class="hover:text-gray-200 transition">Lessons</a>
+          <a href="index.html#practice" class="hover:text-gray-200 transition">Practice</a>
+          <a href="index.html#about" class="hover:text-gray-200 transition">About</a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button id="loginBtn"
+            class="px-4 py-2 rounded-md hover:bg-white hover:bg-opacity-20 transition">Login</button>
+          <button id="signupBtn"
+            class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium hover:bg-gray-100 transition">Sign
+            Up</button>
+        </div>
+        <button id="mobileMenuBtn" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Lesson Header -->
+  <section class="gradient-bg text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="flex items-center">
+        <a href="index.html#lessons" class="text-white hover:text-gray-200 mr-4">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+          <span class="text-sm opacity-80">Course</span>
+          <h1 class="text-3xl md:text-4xl font-bold">Food & Dining Communication</h1>
+          <p class="mt-2 opacity-90">Learn essential phrases for ordering food and dining in Hindi</p>
+        </div>
+      </div>
+      <div class="mt-6 flex items-center">
+        <div class="w-full bg-white bg-opacity-20 rounded-full h-2.5">
+          <div class="bg-white h-2.5 rounded-full" id="progressBar" style="width: 8%"></div>
+        </div>
+        <span class="ml-4 text-sm"><span id="currentLessonNumber">1</span>/8 lessons</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lesson Content -->
+  <section class="py-12">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Lessons Sidebar -->
+        <div class="lg:w-1/4">
+          <div class="bg-white rounded-xl shadow-sm p-6 sticky top-6">
+            <h3 class="font-bold text-lg mb-4">Lessons</h3>
+            <ul class="space-y-2" id="lessonsList">
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md active-lesson font-medium lesson-link" data-lesson="1">
+                  <i class="fas fa-play-circle mr-2 text-indigo-600"></i>
+                  1. Basic Food Vocabulary
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="2">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  2. Ordering Food
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="3">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  3. Asking About Menu
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="4">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  4. Special Requests
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="5">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  5. Paying the Bill
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="6">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  6. Restaurant Etiquette
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="7">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  7. Food Preferences
+                </a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 px-3 rounded-md hover:bg-gray-100 transition lesson-link" data-lesson="8">
+                  <i class="far fa-circle mr-2 text-gray-400"></i>
+                  8. Review & Practice
+                </a>
+              </li>
+            </ul>
+            <div class="mt-6 pt-6 border-t border-gray-200">
+              <h4 class="font-bold text-sm uppercase text-gray-500 mb-3">Achievements</h4>
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                  <i class="fas fa-trophy text-yellow-500 text-sm"></i>
+                </div>
+                <span class="text-sm">Food Explorer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Lesson Content -->
+        <div class="lg:w-3/4">
+          <!-- Lesson 1: Basic Food Vocabulary -->
+          <div id="lesson1" class="lesson-content active bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 1 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Basic Food Vocabulary</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">In this lesson, you'll learn essential Hindi vocabulary for common foods and
+                  drinks.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Common Foods</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">रोटी</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Roti (Bread)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: ro-tee</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">चावल</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Chawal (Rice)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: cha-wal</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">दाल</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Dal (Lentils)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: daal</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">सब्जी</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Sabzi (Vegetables)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: sub-zee</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Common Drinks</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">पानी</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Paani (Water)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: paa-nee</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">चाय</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Chai (Tea)</p>
+                    <p class="text-sm text-gray-500 mt-2">Pronunciation: chai</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Cultural Note</h3>
+                <div class="bg-blue-50 rounded-lg p-4 mt-4">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <i class="fas fa-info-circle text-blue-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-blue-800">In Indian culture, it's common to share food from a common plate. This is
+                        considered a sign of closeness and trust. Also, many Indians eat with their right hand, as the
+                        left hand is traditionally considered unclean.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Practice Exercises -->
+              <div class="mt-12">
+                <h3 class="text-xl font-semibold">Practice Exercises</h3>
+
+                <!-- Exercise 1: Matching -->
+                <div class="mt-6 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">1. Match the Words</h4>
+                  <p class="text-gray-600 mt-2">Match the Hindi words with their English meanings.</p>
+
+                  <div class="mt-4 grid md:grid-cols-2 gap-4" id="matchingExercise">
+                    <div class="border rounded-lg p-3 cursor-move bg-gray-50" draggable="true" data-value="roti">
+                      <span class="hindi-font">रोटी</span> (Roti)
+                    </div>
+                    <div class="border rounded-lg p-3 cursor-move bg-gray-50" draggable="true" data-value="chawal">
+                      <span class="hindi-font">चावल</span> (Chawal)
+                    </div>
+                    <div class="border rounded-lg p-3 bg-gray-100">
+                      Bread
+                      <div class="mt-2 h-10 border-2 border-dashed rounded" id="target-roti"></div>
+                    </div>
+                    <div class="border rounded-lg p-3 bg-gray-100">
+                      Rice
+                      <div class="mt-2 h-10 border-2 border-dashed rounded" id="target-chawal"></div>
+                    </div>
+                  </div>
+                  <button id="checkMatchingBtn"
+                    class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Check Answers
+                  </button>
+                  <div id="matchingFeedback" class="hidden mt-4 p-3 rounded"></div>
+                </div>
+
+                <!-- Exercise 2: Pronunciation Practice -->
+                <div class="mt-8 exercise-card bg-white border rounded-lg p-6">
+                  <h4 class="font-medium text-lg">2. Pronunciation Practice</h4>
+                  <p class="text-gray-600 mt-2">Listen to the audio and repeat the words.</p>
+
+                  <div class="mt-4 space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <span class="hindi-font">रोटी</span><br>
+                        <span class="text-gray-600">Roti</span>
+                      </div>
+                      <button class="p-2 bg-indigo-100 text-indigo-600 rounded-full hover:bg-indigo-200">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <span class="hindi-font">चावल</span><br>
+                        <span class="text-gray-600">Chawal</span>
+                      </div>
+                      <button class="p-2 bg-indigo-100 text-indigo-600 rounded-full hover:bg-indigo-200">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lesson Navigation -->
+              <div class="mt-12 flex justify-between">
+                <button
+                  class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                  data-prev="1">
+                  <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                <button
+                  class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                  data-next="2">
+                  Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson 2: Ordering Food -->
+          <div id="lesson2" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 2 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Ordering Food</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn how to order food in Hindi restaurants and cafes.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Basic Ordering Phrases</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">मैं यह ऑर्डर करना चाहूंगा</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Main yah order karna chaahunga</p>
+                    <p class="text-sm text-gray-500 mt-2">I would like to order this</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">क्या आप मुझे मेनू दिखा सकते हैं?</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Kya aap mujhe menu dikha sakte hain?</p>
+                    <p class="text-sm text-gray-500 mt-2">Can you show me the menu?</p>
+                  </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Practice Exercise</h3>
+                <div class="mt-4 bg-gray-50 rounded-lg p-6">
+                  <p class="text-gray-700 mb-4">Try ordering these items:</p>
+                  <div class="space-y-4">
+                    <div class="flex items-center">
+                      <input type="text" class="flex-1 border rounded-lg px-4 py-2"
+                        placeholder="Type your order in Hindi">
+                      <button
+                        class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Check</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="1">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="3">
+                Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson 3: Asking About Menu -->
+          <div id="lesson3" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 3 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Asking About Menu</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn how to ask about menu items and special dishes.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Menu Questions</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">आज का स्पेशल क्या है?</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Aaj ka special kya hai?</p>
+                    <p class="text-sm text-gray-500 mt-2">What is today's special?</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">यह कैसे बनाया जाता है?</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Yah kaise banaya jata hai?</p>
+                    <p class="text-sm text-gray-500 mt-2">How is this prepared?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="2">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="4">
+                Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson 4: Special Requests -->
+          <div id="lesson4" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 4 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Special Requests</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn how to make special requests about your food.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Common Requests</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">कम मसाला डालें</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Kam masala daalein</p>
+                    <p class="text-sm text-gray-500 mt-2">Please add less spice</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">बिना प्याज लहसुन के बनाएं</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Bina pyaaz lehsun ke banaayein</p>
+                    <p class="text-sm text-gray-500 mt-2">Please make without onion and garlic</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="3">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="5">
+                Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson 5: Paying the Bill -->
+          <div id="lesson5" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 5 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Paying the Bill</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn how to ask for and pay the bill in Hindi.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Bill Related Phrases</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">बिल ले आइए</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Bill le aaiye</p>
+                    <p class="text-sm text-gray-500 mt-2">Please bring the bill</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">क्या आप क्रेडिट कार्ड स्वीकार करते हैं?</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Kya aap credit card sweekar karte hain?</p>
+                    <p class="text-sm text-gray-500 mt-2">Do you accept credit cards?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="4">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="6">
+                Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson 6: Restaurant Etiquette -->
+          <div id="lesson6" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 6 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Restaurant Etiquette</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn about Indian dining etiquette and customs.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Cultural Notes</h3>
+                <div class="mt-4 bg-yellow-50 rounded-lg p-6">
+                  <ul class="list-disc pl-5 space-y-2">
+                    <li>It's common to share food from the same plate in India</li>
+                    <li>Eating with your right hand is traditional</li>
+                    <li>It's polite to wait for everyone to be served before starting to eat</li>
+                    <li>Leaving a small amount of food on your plate is considered polite</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="5">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="7">
+                Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson 7: Food Preferences -->
+          <div id="lesson7" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 7 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Food Preferences</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Learn how to express your food preferences and dietary restrictions.</p>
+
+                <h3 class="text-xl font-semibold mt-6">Preference Phrases</h3>
+                <div class="mt-4 grid md:grid-cols-2 gap-4">
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">मैं शाकाहारी हूं</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Main shakahari hoon</p>
+                    <p class="text-sm text-gray-500 mt-2">I am vegetarian</p>
+                  </div>
+                  <div class="border rounded-lg p-4">
+                    <div class="flex justify-between">
+                      <span class="hindi-font text-xl">मुझे मसालेदार खाना पसंद है</span>
+                      <button class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-volume-up"></i>
+                      </button>
+                    </div>
+                    <p class="text-gray-600 mt-1">Mujhe masaledar khana pasand hai</p>
+                    <p class="text-sm text-gray-500 mt-2">I like spicy food</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="6">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="8">
+                Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson 8: Review & Practice -->
+          <div id="lesson8" class="lesson-content bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-sm text-gray-500">Lesson 8 of 8</span>
+                <h2 class="text-2xl font-bold mt-1">Review & Practice</h2>
+              </div>
+              <button class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-bookmark text-xl"></i>
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <div class="prose max-w-none">
+                <p class="text-gray-700">Practice all the phrases you've learned in a simulated restaurant conversation.
+                </p>
+
+                <h3 class="text-xl font-semibold mt-6">Practice Exercise</h3>
+                <div class="mt-4 bg-gray-50 rounded-lg p-6">
+                  <p class="text-gray-700 mb-4">Try this conversation:</p>
+                  <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                      <p class="text-gray-600">Waiter: नमस्ते, आप क्या लेंगे?</p>
+                      <p class="text-gray-500 text-sm">(Hello, what would you like?)</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                      <p class="text-gray-600">You: मैं मेनू देखना चाहूंगा</p>
+                      <p class="text-gray-500 text-sm">(I would like to see the menu)</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                      <p class="text-gray-600">Waiter: यह रहा मेनू</p>
+                      <p class="text-gray-500 text-sm">(Here is the menu)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lesson Navigation -->
+            <div class="mt-12 flex justify-between">
+              <button
+                class="prev-lesson-btn px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 transition"
+                data-prev="7">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button
+                class="next-lesson-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                data-next="8" disabled>
+                Complete Course <i class="fas fa-check ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fas fa-robot text-2xl mr-2 text-indigo-400"></i>
+            <span class="text-xl font-bold">AI Hindi Coach</span>
+          </div>
+          <p class="text-gray-400 mb-4">Your personal language learning assistant.</p>
+          <p class="text-gray-400 text-sm">
+            <span class="font-medium">ATY Designs</span><br>
+            We build for you
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Product</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Features</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Lessons</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Mobile App</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Company</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Connect</h4>
+          <div class="flex space-x-4 mb-4">
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-500 transition">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+          <p class="text-gray-400 text-sm">Subscribe to our newsletter</p>
+          <div class="mt-2 flex">
+            <input type="email" placeholder="Your email"
+              class="px-4 py-2 rounded-l-md bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full">
+            <button class="px-4 py-2 bg-indigo-600 rounded-r-md hover:bg-indigo-700">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 ATY Designs. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const lessonLinks = document.querySelectorAll('.lesson-link');
+      const lessonContents = document.querySelectorAll('.lesson-content');
+      const progressBar = document.getElementById('progressBar');
+      const currentLessonNumber = document.getElementById('currentLessonNumber');
+      const prevButtons = document.querySelectorAll('.prev-lesson-btn');
+      const nextButtons = document.querySelectorAll('.next-lesson-btn');
+
+      // Function to update lesson display
+      function updateLessonDisplay(lessonNumber) {
+        // Update active lesson in sidebar
+        lessonLinks.forEach(l => l.classList.remove('active-lesson'));
+        document.querySelector(`.lesson-link[data-lesson="${lessonNumber}"]`).classList.add('active-lesson');
+
+        // Update lesson icons
+        lessonLinks.forEach(l => {
+          l.querySelector('i').classList.remove('fa-play-circle', 'text-indigo-600');
+          l.querySelector('i').classList.add('far', 'fa-circle', 'text-gray-400');
+        });
+        document.querySelector(`.lesson-link[data-lesson="${lessonNumber}"] i`).classList.remove('far', 'fa-circle', 'text-gray-400');
+        document.querySelector(`.lesson-link[data-lesson="${lessonNumber}"] i`).classList.add('fa-play-circle', 'text-indigo-600');
+
+        // Show selected lesson content
+        lessonContents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === `lesson${lessonNumber}`) {
+            content.classList.add('active');
+          }
+        });
+
+        // Update progress bar
+        const progress = (parseInt(lessonNumber) / 8) * 100;
+        progressBar.style.width = `${progress}%`;
+        currentLessonNumber.textContent = lessonNumber;
+      }
+
+      // Handle lesson link clicks
+      lessonLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const lessonNumber = this.dataset.lesson;
+          updateLessonDisplay(lessonNumber);
+        });
+      });
+
+      // Handle previous button clicks
+      prevButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const prevLesson = this.dataset.prev;
+          if (prevLesson) {
+            updateLessonDisplay(prevLesson);
+          }
+        });
+      });
+
+      // Handle next button clicks
+      nextButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const nextLesson = this.dataset.next;
+          if (nextLesson) {
+            updateLessonDisplay(nextLesson);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
