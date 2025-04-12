@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn Hindi with AI Hindi Coach, your personal AI-powered language tutor.">
+  <meta name="keywords" content="Hindi, language learning, AI tutor, Hindi practice">
+  <meta name="author" content="ATY Designs">
+  <title>AI Hindi Coach | ATY Designs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .ai-voice-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    #chatbotButton {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-radius: 18px;
+    }
+
+    .user-message {
+      margin-left: auto;
+      background-color: #4f46e5;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .bot-message {
+      background-color: #f3f4f6;
+      color: #111827;
+      border-bottom-left-radius: 4px;
+    }
+
+    .modal {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .modal-hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    .modal-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .typing-indicator {
+      display: flex;
+      padding: 10px 14px;
+      background-color: #f3f4f6;
+      border-radius: 18px;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #6b7280;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingAnimation {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .conversation-bubble {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+    }
+
+    .ai-bubble {
+      background-color: #e0e7ff;
+      border-bottom-left-radius: 4px;
+      color: #1e293b;
+    }
+
+    .user-bubble {
+      background-color: #4f46e5;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    #conversationHistory {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      max-height: 400px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .modal {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <header>
+    <nav class="gradient-bg text-white shadow-lg" role="navigation" aria-label="Main navigation">
+      <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+              <img src="logo.webp" alt="ATY Designs Logo" class="h-8 w-8 mr-2" aria-hidden="true">
+              <i class="fas fa-robot text-2xl mr-2" aria-hidden="true"></i>
+              <span class="text-xl font-bold">AI Hindi Coach</span>
+            </div>
+            <span class="text-sm opacity-80">by ATY Designs</span>
+          </div>
+          <div class="hidden md:flex items-center space-x-8">
+            <a href="#features" class="hover:text-gray-200 transition">Features</a>
+            <a href="#lessons" class="hover:text-gray-200 transition">Lessons</a>
+            <a href="#practice" class="hover:text-gray-200 transition">Practice</a>
+            <a href="#about" class="hover:text-gray-200 transition">About</a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button id="loginBtn" class="px-4 py-2 rounded-md hover:bg-white hover:bg-opacity-20 transition"
+              aria-label="Open login modal">Login</button>
+            <button id="signupBtn"
+              class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium hover:bg-gray-100 transition"
+              aria-label="Open signup modal">Sign Up</button>
+          </div>
+          <button id="mobileMenuBtn" class="md:hidden text-white focus:outline-none" aria-label="Toggle mobile menu"
+            aria-expanded="false">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden mt-4 pb-4" aria-hidden="true">
+          <a href="#features" class="block py-2 hover:bg-white hover:bg-opacity-20 px-4 rounded">Features</a>
+          <a href="#lessons" class="block py-2 hover:bg-white hover:bg-opacity-20 px-4 rounded">Lessons</a>
+          <a href="#practice" class="block py-2 hover:bg-white hover:bg-opacity-20 px-4 rounded">Practice</a>
+          <a href="#about" class="block py-2 hover:bg-white hover:bg-opacity-20 px-4 rounded">About</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero" class="gradient-bg text-white py-20" aria-labelledby="hero-heading">
+      <div class="container mx-auto px-6 flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+          <h1 id="hero-heading" class="text-4xl md:text-5xl font-bold leading-tight mb-6">Learn Hindi with AI</h1>
+          <p class="text-xl mb-8">Your personal AI coach for mastering Hindi through interactive practice.</p>
+          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <button class="px-8 py-3 bg-white text-indigo-600 rounded-md font-bold hover:bg-gray-100 transition"
+              aria-label="Start learning Hindi">Start Learning</button>
+            <button
+              class="px-8 py-3 border-2 border-white text-white rounded-md font-bold hover:bg-white hover:bg-opacity-20 transition"
+              aria-label="Learn how AI Hindi Coach works">How It Works</button>
+          </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center">
+          <div class="relative w-full max-w-md">
+            <div class="bg-white bg-opacity-20 backdrop-blur-md rounded-xl p-6 shadow-2xl">
+              <div class="flex items-center mb-4">
+                <div class="w-10 h-10 rounded-full bg-white bg-opacity-30 flex items-center justify-center mr-3">
+                  <i class="fas fa-robot text-white" aria-hidden="true"></i>
+                </div>
+                <div class="bg-white bg-opacity-30 rounded-lg px-4 py-2">
+                  <p class="text-white">Try saying: <span class="hindi-phrase">"नमस्ते, आप कैसे हैं?"</span> (Namaste,
+                    aap kaise hain?)</p>
+                </div>
+              </div>
+              <div class="bg-white rounded-lg p-4 mb-4">
+                <p class="text-gray-800 mb-2">Click to say the phrase:</p>
+                <div class="flex items-center">
+                  <button id="recordBtn"
+                    class="ai-voice-btn w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 mr-2 transition"
+                    aria-label="Start recording">
+                    <i class="fas fa-microphone"></i>
+                  </button>
+                  <span id="recordStatus" class="text-sm text-gray-500">Click to speak</span>
+                </div>
+              </div>
+              <div id="aiResponse" class="hidden bg-white bg-opacity-30 rounded-lg px-4 py-2 text-white" role="alert">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="py-20 bg-white" aria-labelledby="features-heading">
+      <div class="container mx-auto px-6">
+        <h2 id="features-heading" class="text-3xl font-bold text-center mb-4">Why Learn with AI?</h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-16">Our AI adapts to your learning style with instant
+          feedback.</p>
+        <div class="grid md:grid-cols-3 gap-10">
+          <div class="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition">
+            <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+              <i class="fas fa-microphone-alt text-indigo-600 text-2xl" aria-hidden="true"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Speech Recognition</h3>
+            <p class="text-gray-600">Practice speaking Hindi with instant feedback.</p>
+          </div>
+          <div class="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+              <i class="fas fa-brain text-green-600 text-2xl" aria-hidden="true"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Adaptive Learning</h3>
+            <p class="text-gray-600">Lessons tailored to your progress.</p>
+          </div>
+          <div class="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+              <i class="fas fa-comments text-blue-600 text-2xl" aria-hidden="true"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Conversation Practice</h3>
+            <p class="text-gray-600">Realistic conversations with AI.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lessons" class="py-20 bg-gray-50" aria-labelledby="lessons-heading">
+      <div class="container mx-auto px-6">
+        <h2 id="lessons-heading" class="text-3xl font-bold text-center mb-4">Hindi Learning Path</h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-16">From beginner to fluent speaker.</p>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="lesson-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300">
+            <div class="h-48 bg-indigo-500 flex items-center justify-center">
+              <i class="fas fa-gem text-white text-6xl" aria-hidden="true"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Hindi Basics</h3>
+              <p class="text-gray-600 mb-4">Learn essential greetings and phrases.</p>
+              <a href="hindi-basics.html" class="text-indigo-600 font-medium hover:text-indigo-800 transition">Start
+                Now</a>
+            </div>
+          </div>
+          <div class="lesson-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300">
+            <div class="h-48 bg-green-500 flex items-center justify-center">
+              <i class="fas fa-utensils text-white text-6xl" aria-hidden="true"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Food & Dining</h3>
+              <p class="text-gray-600 mb-4">Order food and talk about cuisine.</p>
+              <a href="food-dining-communication.html"
+                class="text-indigo-600 font-medium hover:text-indigo-800 transition">Start Now</a>
+            </div>
+          </div>
+          <div class="lesson-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300">
+            <div class="h-48 bg-blue-500 flex items-center justify-center">
+              <i class="fas fa-shopping-bag text-white text-6xl" aria-hidden="true"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Shopping</h3>
+              <p class="text-gray-600 mb-4">Master shopping and bargaining.</p>
+              <a href="shopping-communication.html"
+                class="text-indigo-600 font-medium hover:text-indigo-800 transition">Start Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice" class="py-20 bg-white" aria-labelledby="practice-heading">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+            <h2 id="practice-heading" class="text-3xl font-bold mb-6">AI Conversation Practice</h2>
+            <p class="text-gray-600 mb-8">Practice Hindi in real-world scenarios.</p>
+            <button id="startPracticeBtn"
+              class="px-8 py-3 bg-indigo-600 text-white rounded-md font-bold hover:bg-indigo-700 transition"
+              aria-label="Start practicing Hindi conversation">Start Practicing</button>
+          </div>
+          <div class="md:w-1/2">
+            <div id="conversationContainer" class="bg-gray-50 rounded-xl p-6 shadow-lg hidden flex flex-col h-[500px]">
+              <div id="conversationHistory" class="flex-1 overflow-y-auto p-4 space-y-4" role="log" aria-live="polite">
+              </div>
+              <div class="border-t border-gray-200 pt-4">
+                <div class="flex items-center">
+                  <input type="text" id="chatInput" placeholder="Type your response in Hindi..."
+                    class="flex-grow px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    aria-label="Type your Hindi response">
+                  <button id="chatSubmit" class="px-4 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700"
+                    aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+                <div class="mt-2 flex justify-between">
+                  <button id="voiceInputBtn" class="text-sm text-gray-600 hover:text-indigo-600 flex items-center"
+                    aria-label="Toggle voice input">
+                    <i class="fas fa-microphone mr-1"></i> Voice Input
+                  </button>
+                  <button id="getHintBtn" class="text-sm text-gray-600 hover:text-indigo-600 flex items-center"
+                    aria-label="Get a hint">
+                    <i class="fas fa-lightbulb mr-1"></i> Get Hint
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="practicePlaceholder" class="flex-1 flex flex-col items-center justify-center text-center">
+              <p class="text-gray-500 max-w-xs">Click "Start Practicing" to begin chatting with our AI coach.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="about" class="bg-gray-900 text-white py-12" aria-labelledby="about-heading">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fas fa-robot text-2xl mr-2 text-indigo-400" aria-hidden="true"></i>
+            <span class="text-xl font-bold">AI Hindi Coach</span>
+          </div>
+          <p class="text-gray-400 mb-4">Your personal language learning assistant powered by advanced AI technology.</p>
+          <div class="space-y-2">
+            <p class="text-gray-400 text-sm">
+              <span class="font-medium">ATY Designs</span><br>
+              Building innovative solutions for language learning
+            </p>
+            <p class="text-gray-400 text-sm">
+              <i class="fas fa-envelope mr-2"></i>support@aihindicoach.com
+            </p>
+            <p class="text-gray-400 text-sm">
+              <i class="fas fa-phone mr-2"></i>+91 98765 43210
+            </p>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Product</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Features</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing Plans</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Lessons</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Mobile App</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">API Documentation</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">System Requirements</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Learning Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Hindi Grammar Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Cultural Insights</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Success Stories</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Connect</h4>
+          <div class="flex space-x-4 mb-4">
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-500 transition">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+          <p class="text-gray-400 text-sm mb-2">Subscribe to our newsletter for updates and learning tips</p>
+          <div class="mt-2 flex">
+            <input type="email" placeholder="Your email"
+              class="px-4 py-2 rounded-l-md bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full">
+            <button class="px-4 py-2 bg-indigo-600 rounded-r-md hover:bg-indigo-700">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <div class="mt-4 space-y-2">
+            <p class="text-gray-400 text-sm">
+              <i class="fas fa-map-marker-alt mr-2"></i>123 Tech Park, Bangalore, India
+            </p>
+            <p class="text-gray-400 text-sm">
+              <i class="fas fa-clock mr-2"></i>Mon-Fri: 9:00 AM - 6:00 PM IST
+            </p>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-4">Security & Trust</h4>
+          <div class="flex space-x-6">
+            <div class="flex items-center text-gray-400 bg-gray-800 px-4 py-2 rounded">
+              <i class="fas fa-shield-alt text-2xl"></i>
+              <span class="ml-2">SSL Secure</span>
+            </div>
+            <div class="flex items-center text-gray-400 bg-gray-800 px-4 py-2 rounded">
+              <i class="fas fa-lock text-2xl"></i>
+              <span class="ml-2">GDPR Compliant</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="font-bold text-lg mb-4">Payment Methods</h4>
+            <div class="flex space-x-4">
+              <i class="fab fa-cc-visa text-2xl text-gray-400"></i>
+              <i class="fab fa-cc-mastercard text-2xl text-gray-400"></i>
+              <i class="fab fa-cc-paypal text-2xl text-gray-400"></i>
+              <i class="fab fa-cc-amazon-pay text-2xl text-gray-400"></i>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-bold text-lg mb-4">Security & Trust</h4>
+            <div class="flex space-x-6">
+              <div class="flex items-center text-gray-400 bg-gray-800 px-4 py-2 rounded">
+                <i class="fas fa-shield-alt text-2xl"></i>
+                <span class="ml-2">SSL Secure</span>
+              </div>
+              <div class="flex items-center text-gray-400 bg-gray-800 px-4 py-2 rounded">
+                <i class="fas fa-lock text-2xl"></i>
+                <span class="ml-2">GDPR Compliant</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 ATY Designs. All rights reserved.</p>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition">Cookie Policy</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition">Accessibility</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal"
+    role="dialog" aria-labelledby="login-heading" aria-hidden="true">
+    <div class="bg-white rounded-lg w-full max-w-md p-6 mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="login-heading" class="text-2xl font-bold">Login</h3>
+        <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700" aria-label="Close login modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="loginForm">
+        <div class="mb-4">
+          <label for="loginEmail" class="block text-gray-700 mb-2">Email</label>
+          <input type="email" id="loginEmail" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-required="true">
+        </div>
+        <div class="mb-6">
+          <label for="loginPassword" class="block text-gray-700 mb-2">Password</label>
+          <input type="password" id="loginPassword" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-required="true">
+        </div>
+        <div id="loginError" class="text-red-500 mb-4 hidden" role="alert"></div>
+        <button type="submit"
+          class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">Login</button>
+      </form>
+      <div class="mt-4 text-center">
+        <p class="text-gray-600">No account? <button id="switchToSignup" class="text-indigo-600 hover:underline"
+            aria-label="Switch to signup">Sign up</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal"
+    role="dialog" aria-labelledby="signup-heading" aria-hidden="true">
+    <div class="bg-white rounded-lg w-full max-w-md p-6 mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="signup-heading" class="text-2xl font-bold">Create Account</h3>
+        <button id="closeSignupModal" class="text-gray-500 hover:text-gray-700" aria-label="Close signup modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label for="signupName" class="block text-gray-700 mb-2">Full Name</label>
+          <input type="text" id="signupName" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-required="true">
+        </div>
+        <div class="mb-4">
+          <label for="signupEmail" class="block text-gray-700 mb-2">Email</label>
+          <input type="email" id="signupEmail" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-required="true">
+        </div>
+        <div class="mb-6">
+          <label for="signupPassword" class="block text-gray-700 mb-2">Password</label>
+          <input type="password" id="signupPassword" required minlength="6"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-required="true">
+        </div>
+        <div id="signupError" class="text-red-500 mb-4 hidden" role="alert"></div>
+        <button type="submit"
+          class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">Sign Up</button>
+      </form>
+      <div class="mt-4 text-center">
+        <p class="text-gray-600">Have an account? <button id="switchToLogin" class="text-indigo-600 hover:underline"
+            aria-label="Switch to login">Login</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="chatbotButton"
+    class="fixed bottom-6 right-6 w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:bg-indigo-700 transition-all transform hover:scale-110 z-40"
+    role="button" aria-label="Open chatbot">
+    <i class="fas fa-robot text-white text-2xl" aria-hidden="true"></i>
+  </div>
+
+  <div id="chatbotModal" class="fixed inset-0 flex items-center justify-center z-50 hidden modal" role="dialog"
+    aria-labelledby="chatbot-heading" aria-hidden="true">
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-md mx-4 h-[80vh] max-h-[600px] flex flex-col">
+      <div class="bg-indigo-600 text-white p-4 rounded-t-xl flex justify-between items-center">
+        <div class="flex items-center">
+          <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+          </div>
+          <h3 id="chatbot-heading" class="font-bold">Hindi Assistant</h3>
+        </div>
+        <button id="closeChatbot" class="text-white hover:text-gray-200" aria-label="Close chatbot">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4" id="chatbotMessages" role="log" aria-live="polite">
+        <div class="chat-message bot-message">Namaste! I can translate English to Hindi. Type or speak your phrase.
+        </div>
+      </div>
+      <div class="border-t border-gray-200 p-4">
+        <div class="flex items-center">
+          <input type="text" id="chatbotInput" placeholder="Type in English..."
+            class="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-label="Type your English phrase">
+          <button id="chatbotSend" class="px-4 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700"
+            aria-label="Send message">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        <div class="mt-2 flex justify-between">
+          <button id="chatbotVoiceBtn" class="text-sm text-gray-600 hover:text-indigo-600 flex items-center"
+            aria-label="Toggle voice input">
+            <i class="fas fa-microphone mr-1"></i> Voice Input
+          </button>
+          <button id="chatbotPlayBtn" class="text-sm text-gray-600 hover:text-indigo-600 flex items-center"
+            aria-label="Play last Hindi translation">
+            <i class="fas fa-volume-up mr-1"></i> Play Hindi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
