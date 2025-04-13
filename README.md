@@ -22,7 +22,7 @@ AI-powered Hindi language learning platform with voice, conversation, and progre
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/ai-hindi-coach.git
+git clone https://github.com/atishay5845/VerboHindi-ATY.git
 cd ai-hindi-coach
 ```
 
